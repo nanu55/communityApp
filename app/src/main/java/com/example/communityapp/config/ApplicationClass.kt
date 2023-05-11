@@ -2,8 +2,6 @@ package com.example.communityapp.config
 
 import android.Manifest
 import android.app.Application
-import com.example.communityapp.util.SharedPreferencesUtil
-import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
     companion object {
@@ -14,7 +12,7 @@ class ApplicationClass : Application() {
         const val MENU_IMGS_URL = "${SERVER_URL}imgs/menu/"
         const val GRADE_IMGS_URL = "${SERVER_URL}imgs/grade/"
 
-        lateinit var sharedPreferencesUtil: SharedPreferencesUtil
+
 //        lateinit var retrofit: Retrofit
 
         // 모든 퍼미션 관련 배열
@@ -22,8 +20,6 @@ class ApplicationClass : Application() {
             Manifest.permission.ACCESS_FINE_LOCATION,
         )
 
-        // 주문 준비 완료 확인 시간 1분
-        const val ORDER_COMPLETED_TIME = 60 * 1000
     }
 
 
@@ -34,7 +30,7 @@ class ApplicationClass : Application() {
         //UserRepository.initialize(this)
 
         //shared preference 초기화
-        sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
+
 
         // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.
         // 연결 타임아웃시간은 5초로 지정이 되어있고, HttpLoggingInterceptor를 붙여서 어떤 요청이 나가고 들어오는지를 보여줍니다.

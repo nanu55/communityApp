@@ -30,9 +30,4 @@ object CommonUtils {
 //        return if( checkTime(order.orderDate.time))  "주문완료" else "진행 중.."
 //    }
 
-    private fun checkTime(time:Long):Boolean{
-        val curTime = (Date().time+60*60*9*1000)
-
-        return (curTime - time) > ApplicationClass.ORDER_COMPLETED_TIME
-    }
 }

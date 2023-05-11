@@ -13,16 +13,23 @@ import com.example.communityapp.fragment.CommunityFragment
 import com.example.communityapp.fragment.HomeFragment
 import com.example.communityapp.fragment.MypageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 private const val TAG = "MainActivity_테스트"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+//        user = intent.getParcelableExtra<FirebaseUser>("user")!!
+
 
 
 //        val mediaPlayer = MediaPlayer.create(this,R.raw.toughtime)
@@ -30,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 //        button.setOnClickListener {
 //            mediaPlayer.start()
 //        }
+
+
 
         supportFragmentManager.beginTransaction().replace(R.id.frame_layout_main, HomeFragment())
             .commit()
