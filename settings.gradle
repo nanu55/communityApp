@@ -1,2 +1,7 @@
 rootProject.name = "CommunityApp"
 include ':app'
+buildscript {
+    repositories {
+        maven { url 'https://jitpack.io'}
+    }
+}

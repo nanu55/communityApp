@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.communityapp.ui.viewmodel.MypageViewModel" />
+        <variable
+            name="user"
+            type="com.example.communityapp.dto.User" />
+    </data>
+
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.HomeFragment">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/homeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="homehomehomehomehomehomehomehomehomehomehomehomehomehomehomehomehome" />
+            android:text="home" />
 
+        <Button
+            android:id="@+id/dbBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="db test"/>
+
+        <TextView
+            android:id="@+id/dbTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
 </layout>
