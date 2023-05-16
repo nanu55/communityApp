@@ -16,6 +16,7 @@ import com.example.communityapp.R
 import com.example.communityapp.activity.LoginActivity
 import com.example.communityapp.activity.MainActivity
 import com.example.communityapp.config.ApplicationClass
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.FragmentMypageBinding
 import com.example.communityapp.dto.User
 import com.example.communityapp.ui.viewmodel.MypageViewModel
@@ -55,7 +56,6 @@ class MypageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.nameEdt.visibility = View.GONE
         binding.nameSaveBtn.visibility = View.GONE
-//        var user = ApplicationClass.sharedPreferencesUtil.getUser()
         binding.nameEdtBtn.setOnClickListener {
             binding.nameTv.visibility = View.GONE
             binding.nameEdt.visibility = View.VISIBLE
@@ -71,10 +71,19 @@ class MypageFragment : Fragment() {
 
             binding.viewModel?.nameChange()
 
-//            val user = Firebase.auth.currentUser
+            val db = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
+            db.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val user = dataSnapshot.getValue<User>()
+                    user!!.userName = model.name.value.toString()
+                    FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
+                        .setValue(user)
+                }
 
+                override fun onCancelled(error: DatabaseError) {
 
-
+                }
+            })
         }
 
         // sign out
@@ -88,8 +97,6 @@ class MypageFragment : Fragment() {
 
         binding.nameTv.text = model.name.value
 
-
-
         activity?.let {
             Glide.with(it)
                 .load(model.imageUri.value.toString())
@@ -97,45 +104,7 @@ class MypageFragment : Fragment() {
                 .error(R.drawable.ic_error)
                 .into(binding.myPageProfileImageIv)
 
-//            CoroutineScope(Dispatchers.IO).launch {
-//                // 컨텍스트를 변경하여 Glide 사용
-//                val bitmap = withContext(Dispatchers.Main) {
-//                    // 이미지 가져오기
-//                    Glide.with(it)
-//                        .asBitmap()
-//                        .load(model.imageUri.value.toString())
-//                        .submit()
-//                        .get()
-//                }
-//                // UI 스레드에서 ImageView에 이미지 표시
-//                withContext(Dispatchers.Main) {
-//                    binding.myPageProfileImageIv.setImageBitmap(bitmap)
-//                }
-//            }
         }
-
-//        // Write a message to the database
-//        val database = Firebase.database
-//        val user = Firebase.auth
-//        val imageUri = database.reference.child("users").child(user.currentUser!!.uid).child("profileImageUrl")
-//
-//
-//        // Read from the database
-//        imageUri.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                val value = dataSnapshot.getValue<String>()
-//                val uri = value!!.toUri()
-//                activity!!.showToastMessage(uri.toString())
-//                binding.myPageProfileImageIv.setImageURI(uri)
-//
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//
-//            }
-//        })
     }
 
 }

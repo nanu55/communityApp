@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.communityapp.R
+import com.example.communityapp.config.ApplicationClass
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -21,7 +23,6 @@ private const val TAG = "LoginActivity_테스트"
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var auth: FirebaseAuth
     private final val permission_code = 0
     private val permission = {
         android.Manifest.permission.CAMERA;
@@ -36,7 +37,6 @@ class LoginActivity : AppCompatActivity() {
         // 권한 체크
         checkPermission()
 
-        auth = Firebase.auth
         binding.btnLogin.setOnClickListener {
             signIn(binding.editTextLoginID.text.toString(), binding.editTextLoginPW.text.toString())
         }
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
+        val currentUser = FirebaseManager.auth.currentUser
         if(currentUser != null){
             reload(currentUser)
         }
@@ -86,12 +86,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signIn(email: String, password: String) {
         if(email.isNotEmpty() && password.isNotEmpty()) {
-            auth.signInWithEmailAndPassword(email, password)
+            FirebaseManager.auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
-                        val user = auth.currentUser
+                        val user = FirebaseManager.auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.

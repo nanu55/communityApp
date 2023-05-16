@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.util.showToastMessage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -22,17 +23,15 @@ class MypageViewModel : ViewModel() {
     val name: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val imageUri: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val inputText = MutableLiveData<String>()
-    val user = Firebase.auth.currentUser
-    val database = Firebase.database
 
     init {
         viewModelScope.launch {
             Log.i(TAG, "viewModel created")
-            user?.let {
+            FirebaseManager.auth.currentUser?.let {
                 val uid = it.uid
 
-                val databaseUserName = database.reference.child("users").child(uid).child("userName")
-                val databaseProfileImageUri = database.reference.child("users").child(uid).child("profileImageUrl")
+                val databaseUserName = FirebaseManager.database.reference.child("users").child(uid).child("userName")
+                val databaseProfileImageUri = FirebaseManager.database.reference.child("users").child(uid).child("profileImageUrl")
 
                 databaseUserName.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -71,16 +70,16 @@ class MypageViewModel : ViewModel() {
 
     fun nameChange() {
         name.value = inputText.value.toString()
-        val profileUpdates = userProfileChangeRequest {
-            displayName = name.value
-//                photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
-        }
-
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.i(TAG, "profile updated " + name.value)
-                }
-            }
+//        val profileUpdates = userProfileChangeRequest {
+//            displayName = name.value
+////                photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
+//        }
+//
+//        FirebaseManager.auth.currentUser!!.updateProfile(profileUpdates)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Log.i(TAG, "profile updated " + name.value)
+//                }
+//            }
     }
 }
