@@ -1,12 +1,29 @@
 package com.example.communityapp.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.communityapp.config.ApplicationClass
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object CommonUtils {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertMillisToTimezone(millis: Long, timezone: String): LocalDateTime {
+        val instant = Instant.ofEpochMilli(millis)
+        val zoneId = ZoneId.of(timezone)
+        return LocalDateTime.ofInstant(instant, zoneId)
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatLocalDateTime(dateTime: LocalDateTime, pattern: String): String {
+        val formatter = DateTimeFormatter.ofPattern(pattern)
+        return dateTime.format(formatter)
+    }
     //천단위 콤마
     fun makeComma(num: Int): String {
         var comma = DecimalFormat("#,###")

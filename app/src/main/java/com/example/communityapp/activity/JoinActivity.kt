@@ -13,6 +13,7 @@ import android.widget.CursorAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.loader.content.CursorLoader
 import com.example.communityapp.R
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.ActivityJoinBinding
 import com.example.communityapp.dto.User
 import com.example.communityapp.util.showToastMessage
@@ -46,9 +47,9 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join)
 
-        auth = Firebase.auth
-        database = Firebase.database
-        storage = Firebase.storage
+        auth = FirebaseManager.auth
+        database = FirebaseManager.database
+        storage = FirebaseManager.storage
 
 
 

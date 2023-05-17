@@ -1,6 +1,7 @@
 package com.example.communityapp.fragment.placeholder
 
 import com.example.communityapp.dto.Post
+import com.example.communityapp.dto.User
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -33,11 +34,11 @@ object PlaceholderContent {
 
     private fun addItem(item: Post) {
         ITEMS.add(item)
-        ITEM_MAP.put(item.id, item)
+        item.id?.let { ITEM_MAP.put(it, item) }
     }
 
     private fun createPlaceholderItem(position: Int): Post {
-        return Post(position.toString(), "Post " + position, makeDetails(position), "kevin", 0, 0)
+        return Post(position.toString(), "Post " + position, makeDetails(position), User(), emptyList(), 0)
     }
 
     private fun makeDetails(position: Int): String {

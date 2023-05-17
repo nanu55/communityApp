@@ -9,14 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.communityapp.R
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.FragmentHomeBinding
 import com.example.communityapp.ui.viewmodel.MypageViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 
 private const val TAG = "HomeFragment_테스트"
@@ -40,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user = Firebase.auth.currentUser
+        val user = FirebaseManager.auth.currentUser
         user?.let {
             // Name, email address, and profile photo Url
             val name = it.displayName
@@ -60,7 +58,7 @@ class HomeFragment : Fragment() {
             //database------------------------------------------------------------------------------
 
             // Write a message to the database
-            val database = Firebase.database
+            val database = FirebaseManager.database
             val myRef = database.getReference("message")
 
             binding.dbBtn.setOnClickListener {

@@ -1,23 +1,31 @@
 package com.example.communityapp.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.communityapp.R
-import com.example.communityapp.adapter.ItemRecyclerViewAdapter
+import androidx.fragment.app.activityViewModels
+import com.example.communityapp.activity.NewPostActivity
+import com.example.communityapp.adapter.PostAdapter
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.FragmentCommunityListBinding
 import com.example.communityapp.dto.Post
-import com.example.communityapp.fragment.placeholder.PlaceholderContent
+import com.example.communityapp.ui.viewmodel.MypageViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 
 class CommunityFragment : Fragment() {
     private lateinit var binding: FragmentCommunityListBinding
+    private lateinit var postsAdapter: PostAdapter
+    private lateinit var database: DatabaseReference
+    private val model: MypageViewModel by activityViewModels()
     private var columnCount = 1
-    private lateinit var list: List<Post>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +58,41 @@ class CommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        list = PlaceholderContent.ITEMS
+//        list = PlaceholderContent.ITEMS
 
-        binding.list.apply {
+        postsAdapter = PostAdapter()
+        binding.posts.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ItemRecyclerViewAdapter(list)
-//            adapter = ItemRecyclerViewAdapter(list)
+            adapter = postsAdapter
         }
+        database = FirebaseManager.database.reference.child("posts")
+
+        fetchPosts()
+
+        binding.floatingBtn.setOnClickListener {
+            val intent = Intent(activity, NewPostActivity::class.java)
+            intent.putExtra("user", model.user.value)
+            startActivity(intent)
+        }
+    }
+
+    private fun fetchPosts() {
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val posts: MutableList<Post> = mutableListOf()
+                for (postSnapshot in snapshot.children) {
+                    val post = postSnapshot.getValue(Post::class.java)
+                    post?.let {
+                        posts.add(it)
+                    }
+                }
+                postsAdapter.setPosts(posts)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
     companion object {
 
