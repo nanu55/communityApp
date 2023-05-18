@@ -41,7 +41,8 @@ class NewPostActivity : AppCompatActivity() {
 
     private fun writePost(post: Post) {
         val postRef = database.push()
-        postRef.setValue(post)
+        val postId = postRef.key
+        postRef.setValue(post.copy(id = postId))
             .addOnSuccessListener {
                 this.showToastMessage("post write success")
             }

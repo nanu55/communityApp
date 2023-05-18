@@ -38,7 +38,7 @@ object PlaceholderContent {
     }
 
     private fun createPlaceholderItem(position: Int): Post {
-        return Post(position.toString(), "Post " + position, makeDetails(position), User(), emptyList(), 0)
+        return Post(position.toString(), "Post " + position, makeDetails(position), User(), 0)
     }
 
     private fun makeDetails(position: Int): String {

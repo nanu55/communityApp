@@ -2,9 +2,10 @@ package com.example.communityapp.dto
 
 data class Comment(
     var id: String? = null,
+    var postId: String,
     var content: String,
     var user: User? = null,
     var createdAt: Long
     ) : java.io.Serializable {
-    constructor() : this("", "", null, System.currentTimeMillis())
+    constructor() : this("", "","", null, System.currentTimeMillis())
 }

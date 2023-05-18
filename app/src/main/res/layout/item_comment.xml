@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="post"
-            type="com.example.communityapp.dto.Post" />
+            name="comment"
+            type="com.example.communityapp.dto.Comment" />
 
         <variable
             name="adapter"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp"
-        android:id="@+id/post">
+        android:id="@+id/comment">
 
         <TextView
             android:id="@+id/comment_content"

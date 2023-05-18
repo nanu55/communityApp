@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.communityapp.activity.PostActivity
+import com.example.communityapp.databinding.ItemCommentBinding
 
 import com.example.communityapp.fragment.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.communityapp.databinding.FragmentCommunityBinding
+import com.example.communityapp.databinding.ItemPostBinding
 import com.example.communityapp.dto.Comment
 import com.example.communityapp.dto.Post
 import com.example.communityapp.util.CommonUtils
@@ -23,7 +24,7 @@ import com.example.communityapp.util.CommonUtils
 class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     private var comments: List<Comment> = emptyList()
 
-    fun setPosts(posts: List<Post>) {
+    fun setComments(comments: List<Comment>) {
         this.comments = comments
         notifyDataSetChanged()
     }
@@ -31,7 +32,7 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentCommunityBinding.inflate(
+            ItemCommentBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -40,11 +41,10 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = comments[position]
+        holder.contentView.text = item.content
         holder.userNameView.text = item.user!!.userName
 
         val timezone = "Asia/Tokyo"
@@ -52,21 +52,15 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
         val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "yyyy-MM-dd HH:mm")
         holder.createdAtView.text = formattedDateTime
 
-        holder.postView.setOnClickListener {
-            val intent = Intent(it.context, PostActivity::class.java)
-//            intent.putExtra("post", item)
-            (it.context).startActivity(intent)
-        }
     }
 
     override fun getItemCount(): Int = comments.size
 
-    inner class ViewHolder(binding: FragmentCommunityBinding) :
+    inner class ViewHolder(binding: ItemCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val titleView: TextView = binding.postTitle
-        val userNameView: TextView = binding.postUsername
-        val createdAtView: TextView = binding.postCreatedAt
-        val postView: ConstraintLayout = binding.post
+        val contentView: TextView = binding.commentContent
+        val userNameView: TextView = binding.commentUsername
+        val createdAtView: TextView = binding.commentCreatedAt
     }
 
 }
