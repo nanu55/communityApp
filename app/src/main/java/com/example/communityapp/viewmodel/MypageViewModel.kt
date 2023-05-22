@@ -80,4 +80,8 @@ class MypageViewModel : ViewModel() {
 //                }
 //            }
     }
+
+    fun imageUrlChange(newUrl: String) {
+        user.value!!.profileImageUrl = newUrl
+    }
 }

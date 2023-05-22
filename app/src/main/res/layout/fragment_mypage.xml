@@ -20,6 +20,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/myPageProfileImageIv"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/nameTv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/myPageProfileImageEdtBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/myPageProfileImageIv"
+                app:layout_constraintBottom_toBottomOf="@+id/myPageProfileImageIv"
+                android:src="@drawable/baseline_edit_24"/>
+
             <TextView
                 android:id="@+id/nameTv"
                 android:layout_width="wrap_content"
@@ -69,17 +88,6 @@
                 android:src="@drawable/ic_logout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/myPageProfileImageIv"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintBottom_toTopOf="@+id/nameTv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
