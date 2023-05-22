@@ -68,11 +68,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:id="@+id/postCountTv"
+                app:layout_constraintTop_toBottomOf="@id/nameEdt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:id="@+id/commentCountTv"
+                app:layout_constraintTop_toBottomOf="@id/postCountTv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <Button
                 android:id="@+id/nameSaveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="save"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

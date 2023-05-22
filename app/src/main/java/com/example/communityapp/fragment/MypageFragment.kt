@@ -53,6 +53,7 @@ class MypageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateUserProfile()
         binding.nameEdt.visibility = View.GONE
         binding.nameSaveBtn.visibility = View.GONE
         binding.nameEdtBtn.setOnClickListener {
@@ -102,15 +103,18 @@ class MypageFragment : Fragment() {
         val postsQuery = FirebaseManager.database.reference.child("posts")
         postsQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                var count = 0
                 for (postSnapshot in snapshot.children) {
                     val post = postSnapshot.getValue(Post::class.java)
                     post?.let {
                         if(it.user!!.uid == model.user.value!!.uid) {
-                            val updatedPost = it.copy(user = User(model.user.value!!.uid, model.user.value!!.userName, model.user.value!!.uid))
+                            val updatedPost = it.copy(user = User(model.user.value!!.uid, model.user.value!!.userName, model.user.value!!.profileImageUrl))
                             postSnapshot.ref.setValue(updatedPost)
+                            count++
                         }
                     }
                 }
+                binding.postCountTv.text = "post count : " + count
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -123,15 +127,18 @@ class MypageFragment : Fragment() {
         val commentsQuery = FirebaseManager.database.reference.child("comments")
         commentsQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                var count = 0
                 for (commentSnapshot in snapshot.children) {
                     val comment = commentSnapshot.getValue(Comment::class.java)
                     comment?.let {
                         if(it.user!!.uid == model.user.value!!.uid) {
-                            val updatedComment = it.copy(user = User(model.user.value!!.uid, model.user.value!!.userName, model.user.value!!.uid))
+                            val updatedComment = it.copy(user = User(model.user.value!!.uid, model.user.value!!.userName, model.user.value!!.profileImageUrl))
                             commentSnapshot.ref.setValue(updatedComment)
+                            count++
                         }
                     }
                 }
+                binding.commentCountTv.text = "comment count : " + count
             }
 
             override fun onCancelled(error: DatabaseError) {

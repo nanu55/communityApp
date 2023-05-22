@@ -10,5 +10,3 @@ data class User(
     constructor() : this("", "", "")
     constructor(profileImageUrl: String, uid: String) : this(profileImageUrl, uid, "")
 }
-
-// http://mobile-pjt.sample.ssafy.io/rest/user/info?id=iop90

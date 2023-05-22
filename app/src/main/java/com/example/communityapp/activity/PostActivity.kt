@@ -1,7 +1,9 @@
 package com.example.communityapp.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.communityapp.R
@@ -11,6 +13,7 @@ import com.example.communityapp.databinding.ActivityPostBinding
 import com.example.communityapp.dto.Comment
 import com.example.communityapp.dto.Post
 import com.example.communityapp.dto.User
+import com.example.communityapp.util.CommonUtils
 import com.example.communityapp.util.showToastMessage
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,6 +31,7 @@ class PostActivity : AppCompatActivity() {
     private lateinit var postUser: User
     private lateinit var currentUser: User
     private lateinit var postIdFromIntent: String
+    private var countedFlag = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post)
@@ -43,6 +47,8 @@ class PostActivity : AppCompatActivity() {
         commentRef = FirebaseManager.database.reference.child("comments")
         postUserRef = FirebaseManager.database.reference.child("posts").child(postIdFromIntent!!).child("user")
         currentUserRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
+
+
         getCurrentUser()
         fetchPost()
         fetchComments()
@@ -59,20 +65,33 @@ class PostActivity : AppCompatActivity() {
                     user = postUser
                 }
                 writeComment(comment)
-                binding.commentEdt.setText("")
+                binding.commentEdt.text.clear()
             }
         }
     }
 
     private fun fetchPost() {
         postRef.addValueEventListener(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val post = dataSnapshot.getValue<Post>()
+                var post = dataSnapshot.getValue<Post>()
+
+                if(!countedFlag) {
+                    post = post!!.copy(viewCount = post!!.viewCount + 1)
+                    postRef.setValue(post)
+                    countedFlag = true
+                }
                 binding.postTitleTv.text = post!!.title
+                binding.postUserNameTv.text = post!!.user!!.userName
                 binding.postContentTv.text = post!!.content
+                binding.postViewCountTv.text = "view count : " + post!!.viewCount
 
+                val timezone = "Asia/Tokyo"
+                val dateTime = CommonUtils.convertMillisToTimezone(post!!.createdAt, timezone)
+                val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "yyyy-MM-dd HH:mm")
+                binding.postCreatedAtTv.text = formattedDateTime
 
-                postUser = post!!.user!!
+                postUser = post.user!!
             }
 
             override fun onCancelled(error: DatabaseError) {

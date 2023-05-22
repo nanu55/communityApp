@@ -14,9 +14,7 @@
             android:layout_marginStart="24dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="タイトル"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,9 +25,7 @@
             android:layout_marginStart="24dp"
             android:ems="20"
             android:inputType="text"
-            android:text="Content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="内容"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postTitleEdt" />
 
@@ -37,7 +33,7 @@
             android:id="@+id/postSaveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="投稿"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

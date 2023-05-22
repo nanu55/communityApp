@@ -5,7 +5,8 @@ data class Post(
     var title: String,
     var content: String,
     var user: User? = null,
-    var createdAt: Long
+    var createdAt: Long,
+    var viewCount: Int
     ) : java.io.Serializable {
-    constructor() : this("", "", "", null, System.currentTimeMillis())
+    constructor() : this("", "", "", null, System.currentTimeMillis(), 0)
 }

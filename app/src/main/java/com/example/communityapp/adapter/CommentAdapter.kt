@@ -1,26 +1,15 @@
 package com.example.communityapp.adapter
 
-import android.content.Intent
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.communityapp.activity.PostActivity
 import com.example.communityapp.databinding.ItemCommentBinding
-
-import com.example.communityapp.fragment.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.communityapp.databinding.ItemPostBinding
 import com.example.communityapp.dto.Comment
-import com.example.communityapp.dto.Post
 import com.example.communityapp.util.CommonUtils
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     private var comments: List<Comment> = emptyList()
 

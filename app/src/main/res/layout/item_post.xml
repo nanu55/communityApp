@@ -45,6 +45,17 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
+            android:id="@+id/post_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:textSize="8dp"
+            style="@style/Text.Regular"
+            app:layout_constraintTop_toBottomOf="@+id/post_title"
+            app:layout_constraintStart_toEndOf="@id/post_username"/>
+
+        <TextView
             android:id="@+id/post_createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +64,7 @@
             android:textSize="8dp"
             style="@style/Text.Regular"
             app:layout_constraintTop_toBottomOf="@+id/post_title"
-            app:layout_constraintStart_toEndOf="@+id/post_username"/>
+            app:layout_constraintStart_toEndOf="@+id/post_view_count"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

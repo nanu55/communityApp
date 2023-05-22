@@ -9,15 +9,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.communityapp.activity.PostActivity
-
-import com.example.communityapp.fragment.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.communityapp.databinding.ItemPostBinding
 import com.example.communityapp.dto.Post
 import com.example.communityapp.util.CommonUtils
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -48,6 +42,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         val item = posts[position]
         holder.titleView.text = item.title
         holder.userNameView.text = item.user!!.userName
+        holder.viewCountView.text = "view count : " + item.viewCount
 
         val timezone = "Asia/Tokyo"
         val dateTime = CommonUtils.convertMillisToTimezone(item.createdAt, timezone)
@@ -67,6 +62,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         val titleView: TextView = binding.postTitle
         val userNameView: TextView = binding.postUsername
+        val viewCountView: TextView = binding.postViewCount
         val createdAtView: TextView = binding.postCreatedAt
         val postView: ConstraintLayout = binding.post
     }
