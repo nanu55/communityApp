@@ -32,17 +32,14 @@ object CommonUtils {
         return dateTime.format(formatter)
     }
 
+
     fun getUserById(userId: String, callback: (User?) -> Unit) {
         val databaseRef = FirebaseManager.database.reference.child("users").child(userId)
 
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    callback(user)
-                } else {
-                    callback(null)
-                }
+                val user = dataSnapshot.getValue(User::class.java)
+                callback(user)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

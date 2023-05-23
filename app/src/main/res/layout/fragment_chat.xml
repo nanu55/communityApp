@@ -5,42 +5,52 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chats"
             android:name="com.example.communityapp.fragment.CommunityFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:layoutManager="LinearLayoutManager"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".fragment.CommunityFragment"
-            tools:listitem="@layout/item_post" />
+            tools:listitem="@layout/item_chat"/>
 
-        <LinearLayout
-            android:id="@+id/chatEditLayout"
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0"
+            app:layout_constraintBottom_toTopOf="@+id/layout_input"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/chats"
-            android:layout_weight="1">
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
             <EditText
                 android:id="@+id/chatEdt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/chatWriteBtn"
                 android:inputType="text"
-                android:layout_weight="9"
-                android:hint="input chat" />
+                android:hint="メッセージを入力"
+                android:maxLines="6"
+                tools:ignore="Autofill"/>
 
             <Button
                 android:id="@+id/chatWriteBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="64dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
                 android:text="送信" />
-        </LinearLayout>
+
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

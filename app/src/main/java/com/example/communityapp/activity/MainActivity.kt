@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         val actionBar = supportActionBar
         actionBar!!.setDisplayShowCustomEnabled(true)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayHomeAsUpEnabled(false)
         actionBar.setDisplayShowTitleEnabled(false)
 
 
@@ -47,25 +47,29 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_page_1 -> {
                     binding.toolbarTitleTv.text = "ホームページ"
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout_main, HomeFragment()).commit()
+                        .replace(R.id.frame_layout_main, HomeFragment())
+                        .commit()
                     true
                 }
                 R.id.navigation_page_2 -> {
                     binding.toolbarTitleTv.text = "チャット"
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout_main, ChatFragment()).commit()
+                        .replace(R.id.frame_layout_main, ChatFragment())
+                        .commit()
                     true
                 }
                 R.id.navigation_page_3 -> {
                     binding.toolbarTitleTv.text = "コミュニティ"
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout_main, CommunityFragment()).commit()
+                        .replace(R.id.frame_layout_main, CommunityFragment())
+                        .commit()
                     true
                 }
                 R.id.navigation_page_4 -> {
                     binding.toolbarTitleTv.text = "マイページ"
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout_main, MypageFragment()).commit()
+                        .replace(R.id.frame_layout_main, MypageFragment())
+                        .commit()
                     true
                 }
                 else -> false

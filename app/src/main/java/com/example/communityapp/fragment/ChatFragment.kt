@@ -1,6 +1,7 @@
 package com.example.communityapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,8 @@ class ChatFragment : Fragment() {
 
         binding.chats.layoutManager = LinearLayoutManager(requireContext())
         chats = mutableListOf()
-        chatAdapter = ChatAdapter()
-        chatAdapter.setComments(chats)
+        chatAdapter = ChatAdapter(requireContext())
+        chatAdapter.setChats(chats)
         binding.chats.adapter = chatAdapter
         database = FirebaseManager.database.reference.child("chats")
 

@@ -84,7 +84,7 @@ class PostActivity : AppCompatActivity() {
                 binding.postTitleTv.text = post!!.title
                 binding.postUserNameTv.text = post!!.user!!.userName
                 binding.postContentTv.text = post!!.content
-                binding.postViewCountTv.text = "view count : " + post!!.viewCount
+                binding.postViewCountTv.text = "閲覧　" + post!!.viewCount + "回"
 
                 val timezone = "Asia/Tokyo"
                 val dateTime = CommonUtils.convertMillisToTimezone(post!!.createdAt, timezone)
@@ -110,7 +110,7 @@ class PostActivity : AppCompatActivity() {
                         }
                     }
                 }
-                binding.commentsCountTv.text = "comments: " + comments.size
+                binding.commentsCountTv.text = "コメント　" + comments.size + "件"
                 commentAdapter.setComments(comments)
             }
 

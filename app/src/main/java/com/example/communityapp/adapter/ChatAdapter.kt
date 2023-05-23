@@ -1,67 +1,162 @@
 package com.example.communityapp.adapter
 
+import android.content.Context
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
+import com.example.communityapp.R
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.ItemChatBinding
-import com.example.communityapp.databinding.ItemCommentBinding
+import com.example.communityapp.databinding.ItemChatOtherBinding
 import com.example.communityapp.dto.ChatMessage
-import com.example.communityapp.dto.Comment
-import com.example.communityapp.dto.User
 import com.example.communityapp.util.CommonUtils
 import com.example.communityapp.util.CommonUtils.getUserById
 
-class ChatAdapter() : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var chats: List<ChatMessage> = emptyList()
-
-    fun setComments(chats: List<ChatMessage>) {
+    private val VIEW_TYPE_MESSAGE_SENT = 1
+    private val VIEW_TYPE_MESSAGE_RECEIVED = 2
+    private val mContext = context
+    private var mustShowDateFlag = false
+    private val timezone = "Asia/Tokyo"
+    fun setChats(chats: List<ChatMessage>) {
         this.chats = chats
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun getItemViewType(position: Int): Int {
+        val chat = chats[position]
+        val currentUserId = FirebaseManager.auth.currentUser!!.uid
+        if(chat.userId == currentUserId) {
+            return VIEW_TYPE_MESSAGE_SENT
+        } else {
+            return VIEW_TYPE_MESSAGE_RECEIVED
+        }
 
-        return ViewHolder(
-            ItemChatBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if(viewType == VIEW_TYPE_MESSAGE_SENT) {
+            return SentMessageHolder(
+                ItemChatBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
             )
-        )
 
+        } else {
+            return ReceivedMessageHolder(
+                ItemChatOtherBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = chats[position]
-        getUserById(item.userId) { user ->
-            if (user != null) {
-                // user 객체 사용
-                holder.chatUserNameView.text = user.userName
-            } else {
-                // 해당 user id에 대한 데이터가 없는 경우 처리
+
+
+        if(position != 0) {
+            val lastItem = chats[position - 1]
+
+            val dateTime1 = CommonUtils.convertMillisToTimezone(item.createdAt, timezone)
+            val formattedDateTime1 = CommonUtils.formatLocalDateTime(dateTime1, "yyyy-MM-dd")
+            val dateTime2 = CommonUtils.convertMillisToTimezone(lastItem.createdAt, timezone)
+            val formattedDateTime2 = CommonUtils.formatLocalDateTime(dateTime2, "yyyy-MM-dd")
+
+            if(formattedDateTime1 != formattedDateTime2) mustShowDateFlag = true
+
+        } else {
+            mustShowDateFlag = true
+        }
+
+        when (holder.itemViewType) {
+            VIEW_TYPE_MESSAGE_SENT -> (holder as SentMessageHolder).bind(item)
+            VIEW_TYPE_MESSAGE_RECEIVED -> (holder as ReceivedMessageHolder).bind(item)
+        }
+
+//        getUserById(item.userId) { user ->
+//            if (user != null) {
+//                // user 객체 사용
+//                holder.chatUserNameView.text = user.userName
+//            } else {
+//                // 해당 user id에 대한 데이터가 없는 경우 처리
+//            }
+//        }
+//        holder.chatUserNameView.text = item.userId
+//        holder.chatMessageView.text = item.message
+//
+//        val timezone = "Asia/Tokyo"
+//        val dateTime = CommonUtils.convertMillisToTimezone(item.timestamp, timezone)
+//        val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "yyyy-MM-dd HH:mm")
+//        holder.chatTimeStampView.text = formattedDateTime
+
+    }
+
+    inner class SentMessageHolder(binding:  ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
+        val messageView: TextView = binding.textGchatMessageMe
+        val dateView: TextView = binding.textGchatDateMe
+        val timeView: TextView = binding.textGchatTimestampMe
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bind(message: ChatMessage) {
+            messageView.text = message.message
+
+            val dateTime = CommonUtils.convertMillisToTimezone(message.createdAt, timezone)
+            val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "HH:mm")
+            timeView.text = formattedDateTime
+
+            dateView.text = CommonUtils.formatLocalDateTime(dateTime, "MM/dd")
+            if(!mustShowDateFlag) dateView.visibility = View.GONE
+        }
+    }
+
+    inner class ReceivedMessageHolder(binding:  ItemChatOtherBinding) : RecyclerView.ViewHolder(binding.root) {
+        val messageView: TextView = binding.textGchatMessageOther
+        val dateView: TextView = binding.textGchatDateOther
+        val timeView: TextView = binding.textGchatTimestampOther
+        val nameView: TextView = binding.textGchatUserOther
+        val profileImageView: ImageView = binding.imageGchatProfileOther
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bind(message: ChatMessage) {
+            messageView.text = message.message
+
+            val dateTime = CommonUtils.convertMillisToTimezone(message.createdAt, timezone)
+            val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "HH:mm")
+            timeView.text = formattedDateTime
+
+            dateView.text = CommonUtils.formatLocalDateTime(dateTime, "MM/dd")
+            if(!mustShowDateFlag) dateView.visibility = View.GONE
+
+            getUserById(message.userId) {user ->
+                nameView.text = user!!.userName
+
+                Glide.with(mContext)
+                    .load(user!!.profileImageUrl)
+                    .circleCrop()
+                    .placeholder(R.drawable.loading_img)
+                    .into(profileImageView)
             }
         }
-        holder.chatUserNameView.text = item.userId
-        holder.chatMessageView.text = item.message
-
-        val timezone = "Asia/Tokyo"
-        val dateTime = CommonUtils.convertMillisToTimezone(item.timestamp, timezone)
-        val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "yyyy-MM-dd HH:mm")
-        holder.chatTimeStampView.text = formattedDateTime
-
     }
 
     override fun getItemCount(): Int = chats.size
 
-    inner class ViewHolder(binding: ItemChatBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val chatUserNameView: TextView = binding.chatUserNameTv
-        val chatMessageView: TextView = binding.chatMessageTv
-        val chatTimeStampView: TextView = binding.chatTimestampTv
-    }
+//    inner class ViewHolder(binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
+//        val chatUserNameView: TextView = binding.chatUserNameTv
+//        val chatMessageView: TextView = binding.chatMessageTv
+//        val chatTimeStampView: TextView = binding.chatTimestampTv
+//    }
 
 }
