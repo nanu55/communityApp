@@ -19,12 +19,13 @@
                 android:layout_gravity="center"
                 android:textSize="20dp"
                 android:id="@+id/toolbarTitleTv"
-                android:text="ホームページ"/>
+                android:text="ホーム"/>
 
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/frame_layout_main"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/tab_layout_bottom_navigation"

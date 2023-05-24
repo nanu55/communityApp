@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_page_1 -> {
-                    binding.toolbarTitleTv.text = "ホームページ"
+                    binding.toolbarTitleTv.text = "ホーム"
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, HomeFragment())
                         .commit()

@@ -130,6 +130,6 @@ class LoginActivity : AppCompatActivity() {
 
     // 3. 카메라 기능 실행
     private fun startProcess() {
-        this.showToastMessage("카메라 on")
+//        this.showToastMessage("카메라 on")
     }
 }

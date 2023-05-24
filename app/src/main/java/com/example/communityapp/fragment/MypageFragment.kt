@@ -114,7 +114,7 @@ class MypageFragment : Fragment() {
                         }
                     }
                 }
-                binding.postCountTv.text = "post count : " + count
+                binding.postCountTv.text = "投稿　  " + count + "件"
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -138,7 +138,7 @@ class MypageFragment : Fragment() {
                         }
                     }
                 }
-                binding.commentCountTv.text = "comment count : " + count
+                binding.commentCountTv.text = "コメント　" + count + "件"
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -149,7 +149,7 @@ class MypageFragment : Fragment() {
 
     // 작성자 프로필 업데이트 시 해당 게시물의 작성자 정보 업데이트
     private fun updateUserProfile() {
-        val userRef = FirebaseManager.database.reference.child("users").child(model.user.value!!.uid)
+        val userRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
 
         // 사용자 프로필 업데이트
         userRef.child("userName").setValue(model.user.value!!.userName)
@@ -157,7 +157,7 @@ class MypageFragment : Fragment() {
         updateComments()
     }
     private fun updateUserProfileImage() {
-        val userRef = FirebaseManager.database.reference.child("users").child(model.user.value!!.uid)
+        val userRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
         val file = Uri.fromFile(File(pathUri))
 
 

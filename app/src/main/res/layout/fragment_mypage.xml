@@ -24,9 +24,8 @@
                 android:id="@+id/myPageProfileImageIv"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintBottom_toTopOf="@+id/nameTv"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
@@ -35,74 +34,84 @@
                 android:id="@+id/myPageProfileImageEdtBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@+id/myPageProfileImageIv"
-                app:layout_constraintBottom_toBottomOf="@+id/myPageProfileImageIv"
-                android:src="@drawable/baseline_edit_24"/>
+                android:src="@drawable/baseline_edit_24"
+                app:layout_constraintEnd_toEndOf="@id/myPageProfileImageIv"
+                app:layout_constraintStart_toStartOf="@id/myPageProfileImageIv"
+                app:layout_constraintTop_toBottomOf="@id/myPageProfileImageIv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nameTvDes"
+                android:text="ニックネーム"
+                android:textSize="8sp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="@id/myPageProfileImageIv"
+                app:layout_constraintStart_toEndOf="@id/myPageProfileImageIv"/>
 
             <TextView
                 android:id="@+id/nameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:text="@{viewModel.user.userName}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="32sp"
+                android:ems="4"
+                app:layout_constraintStart_toEndOf="@id/myPageProfileImageIv"
+                app:layout_constraintTop_toBottomOf="@id/nameTvDes" />
 
             <ImageButton
                 android:id="@+id/nameEdtBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/nameTv"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/baseline_edit_24"/>
+                android:src="@drawable/baseline_edit_24"
+                app:layout_constraintTop_toTopOf="@id/nameTv"
+                app:layout_constraintStart_toEndOf="@id/nameTv" />
 
             <EditText
                 android:id="@+id/nameEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@={viewModel.inputText}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:ems="4"
+                android:maxLength="10"
+                app:layout_constraintStart_toStartOf="@id/nameTv"
+                app:layout_constraintTop_toTopOf="@id/nameTv" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="20"
                 android:id="@+id/postCountTv"
-                app:layout_constraintTop_toBottomOf="@id/nameEdt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toEndOf="@id/myPageProfileImageIv"
+                app:layout_constraintBottom_toTopOf="@id/commentCountTv" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="20"
                 android:id="@+id/commentCountTv"
-                app:layout_constraintTop_toBottomOf="@id/postCountTv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/myPageProfileImageIv"
+                app:layout_constraintStart_toEndOf="@id/myPageProfileImageIv"/>
 
             <Button
                 android:id="@+id/nameSaveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nameEdt" />
+                android:text="保存"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@id/nameEdt"
+                app:layout_constraintTop_toTopOf="@id/myPageProfileImageIv" />
 
             <ImageButton
                 android:id="@+id/signOutBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_logout"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

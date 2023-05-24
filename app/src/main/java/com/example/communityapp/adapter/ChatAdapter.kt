@@ -2,6 +2,7 @@ package com.example.communityapp.adapter
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +65,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = chats[position]
-
+        mustShowDateFlag = false
 
         if(position != 0) {
             val lastItem = chats[position - 1]
@@ -84,23 +85,6 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
             VIEW_TYPE_MESSAGE_SENT -> (holder as SentMessageHolder).bind(item)
             VIEW_TYPE_MESSAGE_RECEIVED -> (holder as ReceivedMessageHolder).bind(item)
         }
-
-//        getUserById(item.userId) { user ->
-//            if (user != null) {
-//                // user 객체 사용
-//                holder.chatUserNameView.text = user.userName
-//            } else {
-//                // 해당 user id에 대한 데이터가 없는 경우 처리
-//            }
-//        }
-//        holder.chatUserNameView.text = item.userId
-//        holder.chatMessageView.text = item.message
-//
-//        val timezone = "Asia/Tokyo"
-//        val dateTime = CommonUtils.convertMillisToTimezone(item.timestamp, timezone)
-//        val formattedDateTime = CommonUtils.formatLocalDateTime(dateTime, "yyyy-MM-dd HH:mm")
-//        holder.chatTimeStampView.text = formattedDateTime
-
     }
 
     inner class SentMessageHolder(binding:  ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -152,11 +136,4 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     override fun getItemCount(): Int = chats.size
-
-//    inner class ViewHolder(binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
-//        val chatUserNameView: TextView = binding.chatUserNameTv
-//        val chatMessageView: TextView = binding.chatMessageTv
-//        val chatTimeStampView: TextView = binding.chatTimestampTv
-//    }
-
 }

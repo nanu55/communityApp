@@ -37,7 +37,7 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
 
     private lateinit var imageUri: Uri
-    private lateinit var pathUri: String
+    private var pathUri: String? = null
     private var tempFile: File? = null
 
 
@@ -116,6 +116,9 @@ class JoinActivity : AppCompatActivity() {
                         this.showToastMessage("계정 생성 성공")
 
                         val uid = task.result.user!!.uid
+                        if(pathUri == null) {
+
+                        }
                         val file = Uri.fromFile(File(pathUri))
 
                         val storageReference = storage.reference.child("usersprofileImages").child("uid/" + file.lastPathSegment)
@@ -141,6 +144,8 @@ class JoinActivity : AppCompatActivity() {
                         Log.e(TAG, "failure", task.exception)
                     }
                 }
+        } else {
+            this.showToastMessage("全ての項目を入力してください")
         }
     }
 }

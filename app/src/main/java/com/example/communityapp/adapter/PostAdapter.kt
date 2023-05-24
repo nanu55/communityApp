@@ -42,7 +42,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         val item = posts[position]
         holder.titleView.text = item.title
         holder.userNameView.text = item.user!!.userName
-        holder.viewCountView.text = "view count : " + item.viewCount
+        holder.viewCountView.text = "閲覧　" + item.viewCount +"回"
 
         val timezone = "Asia/Tokyo"
         val dateTime = CommonUtils.convertMillisToTimezone(item.createdAt, timezone)

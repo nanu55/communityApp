@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="256dp"
             android:ems="10"
+            android:inputType="text"
             android:hint="メールアドレス"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
