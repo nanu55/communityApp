@@ -2,7 +2,6 @@ package com.example.communityapp.adapter
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
     private val VIEW_TYPE_MESSAGE_SENT = 1
     private val VIEW_TYPE_MESSAGE_RECEIVED = 2
     private val mContext = context
-    private var mustShowDateFlag = false
+    private var mustShowDateFlag = true
     private val timezone = "Asia/Tokyo"
     fun setChats(chats: List<ChatMessage>) {
         this.chats = chats
@@ -65,7 +64,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = chats[position]
-        mustShowDateFlag = false
+        mustShowDateFlag = true
 
         if(position != 0) {
             val lastItem = chats[position - 1]
@@ -75,10 +74,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
             val dateTime2 = CommonUtils.convertMillisToTimezone(lastItem.createdAt, timezone)
             val formattedDateTime2 = CommonUtils.formatLocalDateTime(dateTime2, "yyyy-MM-dd")
 
-            if(formattedDateTime1 != formattedDateTime2) mustShowDateFlag = true
-
-        } else {
-            mustShowDateFlag = true
+            if(formattedDateTime1 == formattedDateTime2) mustShowDateFlag = false
         }
 
         when (holder.itemViewType) {
@@ -102,6 +98,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
 
             dateView.text = CommonUtils.formatLocalDateTime(dateTime, "MM/dd")
             if(!mustShowDateFlag) dateView.visibility = View.GONE
+            else dateView.visibility = View.VISIBLE
         }
     }
 
@@ -122,6 +119,7 @@ class ChatAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHold
 
             dateView.text = CommonUtils.formatLocalDateTime(dateTime, "MM/dd")
             if(!mustShowDateFlag) dateView.visibility = View.GONE
+            else dateView.visibility = View.VISIBLE
 
             getUserById(message.userId) {user ->
                 nameView.text = user!!.userName
