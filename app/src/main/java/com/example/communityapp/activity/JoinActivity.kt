@@ -1,15 +1,10 @@
 package com.example.communityapp.activity
 
-
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.CursorAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.loader.content.CursorLoader
 import com.example.communityapp.R
@@ -19,18 +14,12 @@ import com.example.communityapp.dto.User
 import com.example.communityapp.util.showToastMessage
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import java.io.File
 
-private const val TAG = "JoinActivity_테스트"
-
 class JoinActivity : AppCompatActivity() {
-    val PICK_FROM_ALBUM = 1
+    private val PICK_FROM_ALBUM = 1
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
@@ -40,8 +29,6 @@ class JoinActivity : AppCompatActivity() {
     private var pathUri: String? = null
     private var tempFile: File? = null
 
-
-
     private lateinit var binding: ActivityJoinBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +37,6 @@ class JoinActivity : AppCompatActivity() {
         auth = FirebaseManager.auth
         database = FirebaseManager.database
         storage = FirebaseManager.storage
-
-
 
         binding.profileIv.setOnClickListener {
             goToAlbum()
@@ -71,11 +56,10 @@ class JoinActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != RESULT_OK) { // 코드가 틀릴경우
+        if (resultCode != RESULT_OK) {
             if (tempFile != null) {
                 if (tempFile!!.exists()) {
                     if (tempFile!!.delete()) {
-                        Log.e(TAG, tempFile!!.getAbsolutePath() + " 삭제 성공");
                         tempFile = null
                     }
                 }
@@ -105,7 +89,6 @@ class JoinActivity : AppCompatActivity() {
         return cursor.getString(index!!)
     }
 
-
     private fun createAccount(email: String, password: String) {
         val name = binding.nameEdt.text.toString()
 
@@ -113,7 +96,7 @@ class JoinActivity : AppCompatActivity() {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        this.showToastMessage("계정 생성 성공")
+                        this.showToastMessage("アカウント作成に成功しました")
 
                         val uid = task.result.user!!.uid
                         if(pathUri == null) {
@@ -136,12 +119,9 @@ class JoinActivity : AppCompatActivity() {
                             database.reference.child("users").child(uid)
                                 .setValue(user)
                         }
-
-
                         finish()
                     } else {
                         this.showToastMessage(task.exception.toString())
-                        Log.e(TAG, "failure", task.exception)
                     }
                 }
         } else {

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.communityapp.ui.viewmodel.MypageViewModel" />
+            type="com.example.communityapp.viewmodel.MypageViewModel" />
         <variable
             name="user"
             type="com.example.communityapp.dto.User" />

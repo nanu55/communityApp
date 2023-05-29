@@ -32,6 +32,7 @@ class PostActivity : AppCompatActivity() {
     private lateinit var currentUser: User
     private lateinit var postIdFromIntent: String
     private var countedFlag = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post)
@@ -43,20 +44,19 @@ class PostActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = commentAdapter
         }
+
         postRef = FirebaseManager.database.reference.child("posts").child(postIdFromIntent!!)
         commentRef = FirebaseManager.database.reference.child("comments")
         postUserRef = FirebaseManager.database.reference.child("posts").child(postIdFromIntent!!).child("user")
         currentUserRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
 
-
         getCurrentUser()
         fetchPost()
         fetchComments()
 
-
         binding.commentWriteBtn.setOnClickListener {
             if(binding.commentEdt.text.toString() == "") {
-                this.showToastMessage("input comment")
+                this.showToastMessage("コメントを入力してください")
             } else {
                 val comment = Comment()
                 comment.apply {
@@ -115,7 +115,6 @@ class PostActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }
@@ -126,9 +125,10 @@ class PostActivity : AppCompatActivity() {
         if(currentUser != null) {
             database.setValue(comment.copy(id = commentId, user = currentUser))
                 .addOnSuccessListener {
-                    this.showToastMessage("comment write success")
+                    this.showToastMessage("コメント投稿に成功しました")
                 }
                 .addOnFailureListener {
+                    this.showToastMessage("コメント投稿に失敗しました")
                 }
         }
     }

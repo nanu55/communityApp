@@ -2,18 +2,22 @@ package com.example.communityapp.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import com.example.communityapp.R
 import com.example.communityapp.activity.NewPostActivity
 import com.example.communityapp.adapter.PostAdapter
 import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.FragmentCommunityListBinding
 import com.example.communityapp.dto.Post
-import com.example.communityapp.ui.viewmodel.MypageViewModel
+import com.example.communityapp.viewmodel.MypageViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -24,41 +28,22 @@ class CommunityFragment : Fragment() {
     private lateinit var postsAdapter: PostAdapter
     private lateinit var database: DatabaseReference
     private val model: MypageViewModel by activityViewModels()
-    private var columnCount = 1
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCommunityListBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_list, container, false)
+        binding.apply {
+            viewModel = model
+            lifecycleOwner = viewLifecycleOwner
+        }
+
         return binding.root
-//        val view = inflater.inflate(R.layout.fragment_community_list, container, false)
-//
-//        // Set the adapter
-//        if (view is RecyclerView) {
-//            with(view) {
-//                layoutManager = when {
-//                    columnCount <= 1 -> LinearLayoutManager(context)
-//                    else -> GridLayoutManager(context, columnCount)
-//                }
-//                adapter = ItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
-//            }
-//        }
-//        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        list = PlaceholderContent.ITEMS
 
         postsAdapter = PostAdapter()
         binding.posts.apply {
@@ -67,7 +52,31 @@ class CommunityFragment : Fragment() {
         }
         database = FirebaseManager.database.reference.child("posts")
 
-        fetchPosts()
+        fetchPosts("")
+
+        binding.searchEdt.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if(s!!.isNotEmpty()) {
+                    binding.searchTextRemoveBtn.visibility = View.VISIBLE
+                } else {
+                    binding.searchTextRemoveBtn.visibility = View.GONE
+                }
+            }
+        })
+
+        binding.searchBtn.setOnClickListener {
+            fetchPosts(binding.searchEdt.text.toString())
+        }
+
+        binding.searchTextRemoveBtn.setOnClickListener {
+            binding.searchEdt.text.clear()
+        }
 
         binding.floatingBtn.setOnClickListener {
             val intent = Intent(activity, NewPostActivity::class.java)
@@ -76,36 +85,27 @@ class CommunityFragment : Fragment() {
         }
     }
 
-    private fun fetchPosts() {
+    private fun fetchPosts(keyword : String) {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val posts: MutableList<Post> = mutableListOf()
                 for (postSnapshot in snapshot.children) {
                     val post = postSnapshot.getValue(Post::class.java)
                     post?.let {
-                        posts.add(it)
+                        if(keyword.isEmpty()) posts.add(it)
+                        else {
+                            if(post.title.contains(keyword) || post.content.contains(keyword)) posts.add(it)
+                            else {
+
+                            }
+                        }
                     }
                 }
                 postsAdapter.setPosts(posts)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
-    }
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            CommunityFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,15 +20,13 @@ import com.example.communityapp.databinding.FragmentMypageBinding
 import com.example.communityapp.dto.Comment
 import com.example.communityapp.dto.Post
 import com.example.communityapp.dto.User
-import com.example.communityapp.ui.viewmodel.MypageViewModel
+import com.example.communityapp.viewmodel.MypageViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
 import java.io.File
 
-private const val TAG = "MypageFragment_테스트"
 class MypageFragment : Fragment() {
     private lateinit var binding: FragmentMypageBinding
     private val model: MypageViewModel by activityViewModels()
@@ -142,16 +139,13 @@ class MypageFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // 쿼리 중단 시 처리
             }
         })
     }
 
-    // 작성자 프로필 업데이트 시 해당 게시물의 작성자 정보 업데이트
     private fun updateUserProfile() {
         val userRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
 
-        // 사용자 프로필 업데이트
         userRef.child("userName").setValue(model.user.value!!.userName)
         updatePosts()
         updateComments()
@@ -159,7 +153,6 @@ class MypageFragment : Fragment() {
     private fun updateUserProfileImage() {
         val userRef = FirebaseManager.database.reference.child("users").child(FirebaseManager.auth.currentUser!!.uid)
         val file = Uri.fromFile(File(pathUri))
-
 
         val storageReference = FirebaseManager.storage.reference.child("usersprofileImages").child("uid/" + file.lastPathSegment)
         storageReference.putFile(imageUri).addOnCompleteListener { task ->
@@ -182,7 +175,6 @@ class MypageFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.i(TAG, "requestCode : " + requestCode)
         if (resultCode != AppCompatActivity.RESULT_OK) { // 코드가 틀릴경우
             if (tempFile != null) {
                 if (tempFile!!.exists()) {

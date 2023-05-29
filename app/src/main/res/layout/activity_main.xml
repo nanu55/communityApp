@@ -13,13 +13,28 @@
             android:layout_alignParentTop="true"
             android:id="@+id/toolbar">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="20dp"
-                android:id="@+id/toolbarTitleTv"
-                android:text="ホーム"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:id="@+id/toolbarTitleTv"
+                    android:text="コミュニティ"/>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#e0e0e0" />
+
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -36,7 +51,6 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="#434343"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_nav" />

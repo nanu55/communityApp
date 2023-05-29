@@ -9,24 +9,24 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.communityapp.activity.PostActivity
+import com.example.communityapp.config.FirebaseManager
 import com.example.communityapp.databinding.ItemPostBinding
+import com.example.communityapp.dto.Comment
 import com.example.communityapp.dto.Post
 import com.example.communityapp.util.CommonUtils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     private var posts: List<Post> = emptyList()
 
     fun setPosts(posts: List<Post>) {
-        this.posts = posts
+        this.posts = posts.reversed()
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(
             ItemPostBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -34,7 +34,6 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
                 false
             )
         )
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -43,6 +42,26 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         holder.titleView.text = item.title
         holder.userNameView.text = item.user!!.userName
         holder.viewCountView.text = "閲覧　" + item.viewCount +"回"
+
+        val database = FirebaseManager.database.reference.child("comments")
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var commentCount = 0
+                for (commentSnapshot in snapshot.children) {
+                    val comment = commentSnapshot.getValue(Comment::class.java)
+                    comment?.let {
+                        if(it.postId == item.id) {
+                            commentCount++
+                        }
+                    }
+                }
+                holder.commentCountView.text = "コメント　" + commentCount +"件"
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
 
         val timezone = "Asia/Tokyo"
         val dateTime = CommonUtils.convertMillisToTimezone(item.createdAt, timezone)
@@ -63,6 +82,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         val titleView: TextView = binding.postTitle
         val userNameView: TextView = binding.postUsername
         val viewCountView: TextView = binding.postViewCount
+        val commentCountView: TextView = binding.postCommentCount
         val createdAtView: TextView = binding.postCreatedAt
         val postView: ConstraintLayout = binding.post
     }

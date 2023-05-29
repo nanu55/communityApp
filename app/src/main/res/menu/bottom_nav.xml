@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/navigation_page_1"
-            android:enabled="true"
-            android:title="Home"
-            android:icon="@drawable/baseline_home_24" />
+        android:title="Community"
+        android:id="@+id/navigation_page_1"
+        android:enabled="true"
+        android:icon="@drawable/baseline_people_24" />
     <item
             android:title="Chat"
             android:id="@+id/navigation_page_2"
             android:enabled="true"
             android:icon="@drawable/baseline_chat_24" />
     <item
-            android:title="Community"
-            android:id="@+id/navigation_page_3"
-            android:enabled="true"
-            android:icon="@drawable/baseline_people_24" />
-    <item
         android:title="MyPage"
-        android:id="@+id/navigation_page_4"
+        android:id="@+id/navigation_page_3"
         android:enabled="true"
         android:icon="@drawable/baseline_person_24" />
 </menu>

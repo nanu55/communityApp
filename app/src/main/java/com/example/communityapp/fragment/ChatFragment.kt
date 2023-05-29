@@ -70,7 +70,6 @@ class ChatFragment : Fragment() {
         }
     }
 
-    // sendMessage 함수
     private fun sendMessage(message: String) {
         val userId = FirebaseManager.auth.currentUser!!.uid
         val timestamp = System.currentTimeMillis()

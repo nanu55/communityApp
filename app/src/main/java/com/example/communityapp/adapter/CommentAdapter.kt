@@ -19,7 +19,6 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(
             ItemCommentBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -27,7 +26,6 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
                 false
             )
         )
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
